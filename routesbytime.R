@@ -1,6 +1,8 @@
 library(ggplot2)
 
-stop_times = read.csv('Trimet_2016-02-13/stop_times.txt',stringsAsFactors=F)
+test_limit=F
+#test_limit=5000 # Uncomment to load less stuff for speed while testing
+stop_times = read.csv('Trimet_2016-02-13/stop_times.txt',nrow=test_limit,stringsAsFactors=F)
 agencies = read.csv('Trimet_2016-02-13/agency.txt',stringsAsFactors=F)
 routes = read.csv('Trimet_2016-02-13/routes.txt',stringsAsFactors=F)
 trips = read.csv('Trimet_2016-02-13/trips.txt',stringsAsFactors=F)
