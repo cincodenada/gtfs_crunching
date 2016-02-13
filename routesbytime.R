@@ -28,7 +28,7 @@ png('test.png',w=1000,h=500)
 ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) +
     geom_bar(binwidth=15*60) +
     scale_x_continuous(
-       labels=function(x) { x/3600 },
+       labels=function(x) { hr=x/3600; res=paste((hr-1)%%12+1, ifelse(hr%%24<12, "am", "pm"),sep="") },
        limits=c(0,NA),
        expand=c(0,0),
        breaks=function(x) { seq(x[1],x[2],60*60)})
