@@ -15,7 +15,7 @@ stop_times$departure_secs = sapply(stop_times$departure_time, time_to_secs)
 #alldata = merge(start_end, merge(routes,trips))
 # Copy id -> name generally
 route_names = merge(routes, agencies)
-route_names$display_name = routes$agency_name
+route_names$display_name = route_names$agency_name
 # Special cases
 # Separate MAX and Bus
 route_names$display_name[route_names$agency_id=="TRIMET"] = "TriMet Bus"
@@ -25,5 +25,11 @@ route_names$display_name[grepl("WES",route_names$route_long_name)] = "WES Commut
 alldata = merge(stop_times, merge(trips, route_names))
 colnames(alldata)
 png('test.png',w=1000,h=500)
-ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) + geom_bar()
+ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) +
+    geom_bar(binwidth=15*60) +
+    scale_x_continuous(
+       labels=function(x) { x/3600 },
+       limits=c(0,NA),
+       expand=c(0,0),
+       breaks=function(x) { seq(x[1],x[2],60*60)})
 dev.off()
