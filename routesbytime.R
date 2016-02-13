@@ -1,9 +1,13 @@
 library(ggplot2)
 
+show_date="20160212"
+
 test_limit=F
-#test_limit=5000 # Uncomment to load less stuff for speed while testing
+#test_limit=100000 # Uncomment to load less stuff for speed while testing
+#stop_times = read.csv('Trimet_2016-02-13/stop_times_sample.txt',stringsAsFactors=F)
 stop_times = read.csv('Trimet_2016-02-13/stop_times.txt',nrow=test_limit,stringsAsFactors=F)
 agencies = read.csv('Trimet_2016-02-13/agency.txt',stringsAsFactors=F)
+calendar_dates = read.csv('Trimet_2016-02-13/calendar_dates.txt',stringsAsFactors=F)
 routes = read.csv('Trimet_2016-02-13/routes.txt',stringsAsFactors=F)
 trips = read.csv('Trimet_2016-02-13/trips.txt',stringsAsFactors=F)
 time_to_secs = function(x) {
@@ -24,7 +28,9 @@ route_names$display_name[route_names$agency_id=="TRIMET"] = "TriMet Bus"
 route_names$display_name[grepl("MAX",route_names$route_long_name)] = "TriMet MAX"
 route_names$display_name[grepl("WES",route_names$route_long_name)] = "WES Commuter Rail"
 
-alldata = merge(stop_times, merge(trips, route_names))
+trip_dates = merge(trips, calendar_dates)
+trip_dates = trip_dates[trip_dates$date==show_date,]
+alldata = merge(stop_times, merge(trip_dates, route_names))
 
 num_instances = as.data.frame(table(alldata$display_name))
 colnames(num_instances) = c('display_name','num_instances')
