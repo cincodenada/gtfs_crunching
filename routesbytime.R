@@ -31,9 +31,10 @@ colnames(num_instances) = c('display_name','num_instances')
 alldata = merge(alldata, num_instances)
 
 colnames(alldata)
-png('PortlandTransit.png',w=5000,h=2000,res=300)
+png('PortlandTransitMultiples.png',w=5000,h=2000,res=300)
 ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) +
     geom_bar(binwidth=15*60, aes(order=num_instances)) +
+    facet_wrap(~display_name,ncol=3) +
     scale_x_continuous(
        labels=function(x) { hr=x/3600; res=paste((hr-1)%%12+1, ifelse(hr%%24<12, "am", "pm"),sep="") },
        limits=c(0,NA),
