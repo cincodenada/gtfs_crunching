@@ -24,7 +24,7 @@ route_names$display_name[grepl("WES",route_names$route_long_name)] = "WES Commut
 
 alldata = merge(stop_times, merge(trips, route_names))
 colnames(alldata)
-png('test.png',w=1000,h=500)
+png('PortlandTransit.png',w=5000,h=2000,res=300)
 ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) +
     geom_bar(binwidth=15*60) +
     scale_x_continuous(
