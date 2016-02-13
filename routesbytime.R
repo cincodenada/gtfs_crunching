@@ -25,10 +25,15 @@ route_names$display_name[grepl("MAX",route_names$route_long_name)] = "TriMet MAX
 route_names$display_name[grepl("WES",route_names$route_long_name)] = "WES Commuter Rail"
 
 alldata = merge(stop_times, merge(trips, route_names))
+
+num_instances = as.data.frame(table(alldata$display_name))
+colnames(num_instances) = c('display_name','num_instances')
+alldata = merge(alldata, num_instances)
+
 colnames(alldata)
 png('PortlandTransit.png',w=5000,h=2000,res=300)
 ggplot(alldata, aes(x=arrival_secs,group=display_name,fill=display_name)) +
-    geom_bar(binwidth=15*60) +
+    geom_bar(binwidth=15*60, aes(order=num_instances)) +
     scale_x_continuous(
        labels=function(x) { hr=x/3600; res=paste((hr-1)%%12+1, ifelse(hr%%24<12, "am", "pm"),sep="") },
        limits=c(0,NA),
